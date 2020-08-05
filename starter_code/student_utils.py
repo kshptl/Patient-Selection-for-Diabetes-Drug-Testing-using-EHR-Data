@@ -12,6 +12,10 @@ def reduce_dimension_ndc(df, ndc_df):
     return:
         df: pandas dataframe, output dataframe with joined generic drug name
     '''
+    
+    ndc_dict = ndc_df.set_index("NDC_Code")["Non-proprietary Name"].to_dict()
+    df["generic_drug_name"] = df.ndc_code.replace(ndc_dict)
+    
     return df
 
 #Question 4
@@ -21,6 +25,22 @@ def select_first_encounter(df):
     return:
         - first_encounter_df: pandas dataframe, dataframe with only the first encounter for a given patient
     '''
+    # convert data to encounter level and split at patient level
+    group_col = ["patient_nbr", "encounter_id"]
+    agg_cols = [col for col in df.columns if col not in group_col]
+    df = df.groupby(group_col)[agg_cols].agg(lambda x: list(x))
+    df = pd.DataFrame(df)
+    
+    # save encounter IDs in separate column
+    df.insert(0,"encounter_id",df.index.get_level_values(1))
+    
+    # rename encounter index starting from 0 to make slicing easier
+    df.index = pd.MultiIndex.from_arrays([df.index.get_level_values(0), df.groupby(level=0).cumcount()], names=['patient_nbr', 'encounter_id'])
+
+    # select only first encounter for each patient
+    first_encounter_df = df.xs(0, level=1)
+    first_encounter_df.reset_index(inplace=True)
+    
     return first_encounter_df
 
 
