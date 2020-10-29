@@ -1,4 +1,4 @@
-# Diabetes Drug Testing
+# Regression Model to Predict Patient Estimated Hospitalization Time
 Drugs that are ready for Phase III clinical trial testing undergo administering and screening. For example, a very unique and sensitive diabetes drug requires administering and screening the drug over at least 5-7 days of time in the hospital with frequent monitoring/testing and patient medication adherence training with a mobile application. A predictive model was built that can identify which type of patients the drug should be tested on. Target patients were people that were likely to be in the hospital for this duration of time and would not incur significant additional costs for administering this drug to the patient and monitoring.  
 
 In order to achieve this goal a regression model was built that could predict the estimated hospitalization time for a patient and use this to select/filter patients for the study.
