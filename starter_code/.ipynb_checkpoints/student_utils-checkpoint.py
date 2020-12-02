@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import os
 import tensorflow as tf
+import math
+from numpy.random import MT19937
+from numpy.random import RandomState, SeedSequence
 
 ####### STUDENTS FILL THIS OUT ######
 #Question 3
@@ -55,6 +58,19 @@ def patient_dataset_splitter(df, patient_key='patient_nbr'):
      - validation: pandas dataframe,
      - test: pandas dataframe,
     '''
+    rs = RandomState(MT19937(SeedSequence(42)))
+    index = df.index.to_numpy().copy()
+    rs.shuffle(index)
+    
+    df = df.iloc[index].copy()
+    
+    n_train = math.ceil(len(df)*.6)
+    n_val = n_train + math.ceil(len(df)*.2)
+    n_test = n_val + math.ceil(len(df)*.2)
+    
+    train = df.iloc[index[:n_train]]
+    validation = df.iloc[index[n_train:n_val]]
+    test = df.iloc[index[n_val:n_test]]
     return train, validation, test
 
 #Question 7
