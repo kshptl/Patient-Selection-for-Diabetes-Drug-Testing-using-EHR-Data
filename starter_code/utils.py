@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_probability as tfp
 import os
-from student_utils import create_tf_numeric_feature
+from project_utils import create_tf_numeric_feature
 
 def aggregate_dataset(df, grouping_field_list,  array_field):
 
@@ -34,7 +34,7 @@ def cast_df(df, col, d_type=str):
 def impute_df(df, col, impute_value=0):
     return df[col].fillna(impute_value)
     
-def preprocess_df(df, categorical_col_list, numerical_col_list, predictor, categorical_impute_value='nan',             numerical_impute_value=0):
+def preprocess_df(df, categorical_col_list, numerical_col_list, predictor, categorical_impute_value='nan', numerical_impute_value=0):
     df[predictor] = df[predictor].astype(float)
     for c in categorical_col_list:
         df[c] = cast_df(df, c, d_type=str)
